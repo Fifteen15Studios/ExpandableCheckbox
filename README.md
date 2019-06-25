@@ -111,9 +111,9 @@ val child1 = findViewById<Checkbox>(R.id.childCheckbox)
 expandableCheckbox.setChildOnCheckedChangeListener(0, object : CompoundButton.OnCheckedChangeListener {
   override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
       if (isChecked)
-      // Do something when checked
+          // Do something when checked
       else
-      // Do something when unchecked
+          // Do something when unchecked
   }
 })
 ```
