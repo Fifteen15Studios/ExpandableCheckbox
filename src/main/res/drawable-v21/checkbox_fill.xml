@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true"
+        android:drawable="@drawable/checkbox_on">
+        <!--<animation-list
+            android:oneshot="true">
+            <item android:drawable="@drawable/checkbox_off" android:duration="200" />
+            <item android:drawable="@drawable/checkbox_full" android:duration="200" />
+            <item android:drawable="@drawable/checkbox_on" android:duration="200" />
+        </animation-list>-->
+    </item>
+    <item android:state_checked="false"
+        android:drawable="@drawable/checkbox_off" >
+        <!--<animation-list
+            android:oneshot="true">
+            <item android:drawable="@drawable/checkbox_on" android:duration="200" />
+            <item android:drawable="@drawable/checkbox_full" android:duration="200" />
+            <item android:drawable="@drawable/checkbox_off" android:duration="200" />
+        </animation-list>-->
+    </item>
+</selector>
+<!--
+<animated-selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/checked"
+        android:state_checked="true"
+        android:drawable="@drawable/checkbox_on" />
+    <item
+        android:id="@+id/unchecked"
+        android:drawable="@drawable/checkbox_off" />
+    <transition
+        android:fromId="@+id/unchecked"
+        android:toId="@+id/checked"
+        android:drawable="@drawable/btn_checkbox_unchecked_to_checked_mtrl_animation" />
+    <transition
+        android:fromId="@+id/checked"
+        android:toId="@+id/unchecked"
+        android:drawable="@drawable/btn_checkbox_checked_to_unchecked_mtrl_animation" />
+</animated-selector>-->

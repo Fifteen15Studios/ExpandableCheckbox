@@ -1,0 +1,33 @@
+<resources>
+    <declare-styleable name="ExpandableCheckbox">
+        <attr name="text" format="string" />
+        <attr name="textColor" format="color|reference"/>
+        <attr name="checked" format="boolean|reference" />
+        <attr name="expanded" format="boolean|reference" />
+        <attr name="childTextColor" format="color|reference" />
+        <attr name="expanderColor" format="color|reference" />
+        <attr name="checkboxColor" format="color|reference" />
+        <attr name="childCheckboxColor" format="color|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomTheme">
+        <attr name="textStyle" format="reference"/>
+    </declare-styleable>
+    <!--<attr name="exampleDimension" format="dimension" />
+    <attr name="exampleColor" format="color" />
+    <attr name="exampleDrawable" format="color|reference" />-->
+
+    <style name="Widget.ExpandableCheckbox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="text">""</item>
+        <item name="checked">false</item>
+        <item name="expanded">false</item>
+        <item name="textColor">?attr/textColorAlertDialogListItem</item>
+        <item name="childTextColor">?attr/textColorAlertDialogListItem</item>
+        <item name="checkboxColor">?attr/colorPrimary</item>
+        <item name="childCheckboxColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="ExpandableCheckboxTheme" parent="@android:style/Theme">
+        <item name="textStyle">@style/Widget.ExpandableCheckbox</item>
+    </style>
+</resources>
