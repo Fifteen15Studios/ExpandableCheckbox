@@ -119,3 +119,30 @@ expandableCheckbox.setChildOnCheckedChangeListener(0, object : CompoundButton.On
   }
 })
 ```
+
+## Pubic functions
+**isExpanded()** - Returns true if the view is currently expanded, false if it is currently collapsed
+
+**expand(expand: Boolean)** - Parameters: expand: If true it will expand the view, if false it will collapse the view
+
+**addChild(text : String, onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?)** - Adds a new child checkbox. Parameters: text: The text to display next to the child checkbox. onCheckedChangeListener: Actions to perform when the check changes for this child.
+
+**setChildOnCheckedChangeListener(index: Int, onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?)** - Sets the onCheckedChangeListener for a child checkbox. Paramters: index: index of the checkbox you're modifying. onCheckedChangeListener: Actions to perform when the check changes for this child.
+
+**setChildChecked(index: Int, checked : Boolean)** -  Checks or unchecks a child checkbox. Parameters: index: index of the checkbox you're modifying. checked: If true will check the checkbox, if false will uncheck the checkbox
+
+**setChildChecked(text: String, checked : Boolean)** - Checks or unchecks a child checkbox. text: Finds a checkbox with this text. checked: If true will check the checkbox, if false will uncheck the checkbox
+
+**getChildCheckboxCount()** - Returns the number of child checkboxes
+
+**setText(text : String)** - Sets the text next to the parent checkbox
+
+**setChecked(checked: Boolean)** - Checks of unchecks the parent checkbox and ONLY the parent checkbox. Calling this function will NOT affect the children. Parameter: If true checks the parent, if False unchecks the parent.
+
+**setAllChecked(checked : Boolean)** - Checks or unchecks all checkboxes, parent and children. Parameters: checked: If true checks the parent and all children, if false unchecks the parent and all children.
+
+**isChecked()** - Returns true if parent is checked, flase if parent is not checked.
+
+**isChecked(index: Int)** - Returns true if child checkbox is checked, false if child checkbox is not checked. Parameters: index: index of child to check.
+
+**setCheckedChangeListener(listener: OnCheckedChangeListener)** - Sets onCheckedChangeListener of parent checkbox. Parameters: onChechedChangeListener: actions to perform when checked changes.
