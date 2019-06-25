@@ -63,11 +63,11 @@ expandableCheckbox.addChild("child checkbox", object : CompoundButton.OnCheckedC
 // Optional values
 expandableCheckbox.expanded = true
 expandableCheckbox.text = "Parent checkbox text"
-expandableCheckbox.textColor = Color.White
-expandableCheckbox.childTextColor = Color.Green
-expandableCheckbox.checkboxColor = Color.BLACK
+expandableCheckbox.textColor = Color.WHITE
+expandableCheckbox.childTextColor = Color.GREEN
+expandableCheckbox.checkboxColor = Color.MAGENTA
 expandableCheckbox.childCheckboxColor = Color.BLUE
-expandableCheckbox.expanderColor = Color.Yellow
+expandableCheckbox.expanderColor = Color.YELLOW
 ```
 
 ## XML Example
@@ -84,7 +84,7 @@ Most of the time when using XML, you will also have some Java or Kotlin code wit
     app:text="ParentCheckbox"
     app:textColor="@color/white"
     app:childTextColor="@color/green"
-    app:checkboxColor="@color/black"
+    app:checkboxColor="@color/majenta"
     app:childCheckboxColor="@color/blue"
     app:expanderColor="@color/yellow">
     <!-- Any of the above values that start with "app:" are optional -->
