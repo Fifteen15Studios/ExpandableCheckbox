@@ -1,6 +1,8 @@
 # ExpandableCheckbox
 An expandable checkbox for Android which can contain child checkboxes
 
+<img src="https://raw.githubusercontent.com/Fifteen15Studios/ExpandableCheckbox/master/2019-06-25%2015.40.03.png?token=AAH3TOIWL5XUPO6INOHNHQK5DO2TW" alt="all unchecked" width="250"> <img src="https://raw.githubusercontent.com/Fifteen15Studios/ExpandableCheckbox/master/2019-06-25%2015.40.08.png?token=AAH3TOOYURWVVS3H6K5TKJK5DO2WM" alt="some checked" width="250"> <img src="https://raw.githubusercontent.com/Fifteen15Studios/ExpandableCheckbox/master/2019-06-25%2015.40.13.png?token=AAH3TOLIF6Y6OYHECJIR5US5DO2YU" alt="all checked" width="250">
+
 ## How it works
 Checkboxes can be used from Java/Kotlin code, from XML code, or a combination of both.
 
