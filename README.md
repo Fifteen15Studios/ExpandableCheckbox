@@ -129,6 +129,9 @@ expandableCheckbox.setChildOnCheckedChangeListener(0, object : CompoundButton.On
 
 **addChild(text : String, onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?)** - Adds a new child checkbox. Parameters: text: The text to display next to the child checkbox. onCheckedChangeListener: Actions to perform when the check changes for this child.
 
+**addExpandableChild(child: ExpandableCheckbox, onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?)** - Adds a new child ExpandableCheckbox.
+Parameters: child: The checkbox to add. onCheckedChangeListener: Actions to perform when the check changes for this child.
+
 **setChildOnCheckedChangeListener(index: Int, onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?)** - Sets the onCheckedChangeListener for a child checkbox. Paramters: index: index of the checkbox you're modifying. onCheckedChangeListener: Actions to perform when the check changes for this child.
 
 **setChildChecked(index: Int, checked : Boolean)** -  Checks or unchecks a child checkbox. Parameters: index: index of the checkbox you're modifying. checked: If true will check the checkbox, if false will uncheck the checkbox
