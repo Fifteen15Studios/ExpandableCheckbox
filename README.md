@@ -92,7 +92,6 @@ Most of the time when using XML, you will also have some Java or Kotlin code wit
     app:childCheckboxColor="@color/blue"
     app:expanderColor="@color/yellow">
     <!-- Any of the above values that start with "app:" are optional -->
-    <!-- Changing the color of the expander will NOT show in Android Studio preview, but all other changes will -->
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
