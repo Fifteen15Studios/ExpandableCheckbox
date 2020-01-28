@@ -14,7 +14,7 @@ Clicking on the expander [+] or [-] will expand or collapse the child view.
 
 Long pressing the text of the parent checkbox will also expand or collapse the child view.
 
-### Optional parameters
+### Optional XML parameters
 **expanded**: The initial state of the child view. If true, the children will be shown, if false they will be hidden.
 
 **Default**: False
