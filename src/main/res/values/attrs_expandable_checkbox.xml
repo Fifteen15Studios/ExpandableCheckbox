@@ -17,12 +17,14 @@
     <attr name="exampleColor" format="color" />
     <attr name="exampleDrawable" format="color|reference" />-->
 
+    <!-- default values -->
     <style name="Widget.ExpandableCheckbox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="text">""</item>
         <item name="checked">false</item>
         <item name="expanded">false</item>
         <item name="textColor">?attr/textColorAlertDialogListItem</item>
         <item name="childTextColor">?attr/textColorAlertDialogListItem</item>
+        <item name="expanderColor">?attr/textColorAlertDialogListItem</item>
         <item name="checkboxColor">?attr/colorPrimary</item>
         <item name="childCheckboxColor">?attr/colorPrimary</item>
     </style>

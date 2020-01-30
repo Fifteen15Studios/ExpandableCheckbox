@@ -14,66 +14,205 @@ import android.widget.*
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.core.content.ContextCompat
 import androidx.core.widget.CompoundButtonCompat
-import java.lang.Exception
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import kotlin.Exception
 
 class ExpandableCheckbox : ConstraintLayout {
 
-    private val DIRECTION_DOWN = 0
-    private val DIRECTION_UP = 1
+    companion object {
+        const val SHAPE_SQUARE = 0
+        const val SHAPE_STAR = 1
 
-    private var expanded = false
+        private const val DIRECTION_DOWN = 0
+        private const val DIRECTION_UP = 1
+    }
+
+    /**
+     * Whether or not the child checkboxes are show
+     */
+    var expanded = false
+        set(value) {
+            field = value
+
+            try{
+                expand(value)
+            }
+            catch (e: Exception)
+            {e.printStackTrace()}
+
+            if(value) {
+                if (Build.VERSION.SDK_INT >= 21)
+                    expander?.setImageDrawable(context.getDrawable(R.drawable.expander_expanded))
+                else
+                    expander?.setImageDrawable(resources.getDrawable(R.drawable.expander_expanded))
+            }
+            else {
+                if (Build.VERSION.SDK_INT >= 21)
+                    expander?.setImageDrawable(context.getDrawable(R.drawable.expander_collapsed))
+                else
+                    expander?.setImageDrawable(resources.getDrawable(R.drawable.expander_collapsed))
+            }
+
+            changeExpanderColor()
+        }
 
     private var checkboxLayout : LinearLayout? = null
     private var checkbox : AppCompatCheckBox? = null
     private var expanderLayout : LinearLayout? = null
     private var expander : ImageView? = null
+    private var parent : ExpandableCheckbox? = null
 
-    private var text = ""
+    /**
+     * The shape of the checkboxes. Can be set to [SHAPE_SQUARE] or [SHAPE_STAR]
+     */
+    var shape = SHAPE_SQUARE
+        set(value) {
+            field = value
+
+            try{
+                setCheckboxView()
+            }
+            catch (e : Exception)
+            {
+
+            }
+        }
+
+    /**
+     * Text to be displayed next to the checkbox
+     */
+    var text = ""
+        set(value) {
+            field = value
+
+            checkbox?.text = value
+        }
+
+    /**
+     * Color of the text next to the checkbox
+     */
     var textColor = Color.BLACK
-    set(value) {
-        try {
+        set(value) {
+            if(field!=value) {
+                field = value
+                textColorChanged = true
+            }
+
             checkbox?.setTextColor(value)
         }
-        catch(e : Exception)
-        {
-            e.printStackTrace()
+
+    private var textColorChanged = false
+
+    /**
+     * Color of the text next to the checkbox on the children of this checkbox
+     */
+    // TODO: this change doesn't show in XML
+    var childTextColor = Color.BLACK
+        set(value) {
+            if(field!=value) {
+                field = value
+                childTextColorChanged = true
+            }
+
+            for(i in 0 until getChildCheckboxCount())
+            {
+                val box = getChildCheckboxAt(i)
+                if(box is ExpandableCheckbox)
+                {
+                    if (!box.textColorChanged)
+                        box.textColor = value
+                    if (!box.childTextColorChanged)
+                        box.childTextColor = value
+                }
+            }
+
+            setCheckboxView()
         }
 
-        field = value
-    }
-    var childTextColor = Color.BLACK
-    set(value) {
-        try {
-            if (getChildCheckboxCount() > 0) {
-                for (i in 0 until getChildCheckboxCount()) {
-                    getChildCheckboxAt(i)?.setTextColor(value)
+    var childTextColorChanged = false
+
+    /**
+     * Color of the checkbox
+     */
+    var checkboxColor = Color.BLACK
+        set(value) {
+            if(field!=value) {
+                field = value
+                checkboxColorChanged = true
+            }
+
+            try {
+                //Change Color
+                CompoundButtonCompat.setButtonTintList(checkbox!!,
+                        ColorStateList(
+                                arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf()),
+                                intArrayOf(value, value)))
+
+                setCheckboxView()
+            }
+            catch (e: Exception)
+            {
+                checkboxColorChanged = false
+                e.printStackTrace()
+            }
+        }
+
+    private var checkboxColorChanged = false
+
+    /**
+     * Color of the checkbox for the children of this checkbox
+     */
+    var childCheckboxColor = Color.BLACK
+        set(value) {
+            if(field != value) {
+                field = value
+                childCheckboxColorChanged = true
+            }
+
+            for(i in 0 until getChildCheckboxCount())
+            {
+                val box = getChildCheckboxAt(i)
+                if(box is ExpandableCheckbox)
+                {
+                    if(!box.checkboxColorChanged)
+                        box.checkboxColor = value
+                    if(!box.childCheckboxColorChanged)
+                        box.childCheckboxColor = value
+                }
+            }
+
+            setCheckboxView()
+        }
+
+    private var childCheckboxColorChanged = false
+
+    /**
+     * Color of the [+] or [-] icon next to the checkbox
+     */
+    // TODO: Doesn't trickle down all the way, doesn't show completely correctly in XML
+    var expanderColor = Color.BLACK
+        set(value) {
+            if(field!=value) {
+                field = value
+                expanderColorChanged = true
+                changeExpanderColor()
+            }
+
+            for(i in 0 until getChildCheckboxCount())
+            {
+                val box = getChildCheckboxAt(i)
+                if(box is ExpandableCheckbox)
+                {
+                    if(!box.expanderColorChanged) {
+                        box.expanderColor = value
+                    }
                 }
             }
         }
-        catch (e: Exception)
-        {
-            e.printStackTrace()
-        }
 
-        field = value
-    }
-
-    var checkboxColor : Int? = null
-    var childCheckboxColor : Int? = null
-
-    var expanderColor : Int? = null
-    set(value) {
-        field = value
-
-        try {
-            changeExpanderColor(value!!)
-        }
-        catch (e : Exception)
-        {e.printStackTrace()}
-    }
+    private var expanderColorChanged = false
 
     private var children = LinearLayout(context)
 
@@ -90,11 +229,19 @@ class ExpandableCheckbox : ConstraintLayout {
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
         init(attrs, defStyle)
     }
+
     /**
      * Returns whether or not the view is expanded
      */
     fun isExpanded(): Boolean {
         return expanded
+    }
+
+    /**
+     * @return True if this checkbox contains other checkboxes, false otherwise
+     */
+    fun hasChildren(): Boolean {
+        return getChildCheckboxCount() > 0
     }
 
     private fun init(attrs: AttributeSet?, defStyle: Int) {
@@ -106,6 +253,7 @@ class ExpandableCheckbox : ConstraintLayout {
         checkboxLayout = view.findViewById(R.id.checkboxLayout)
         checkbox = view.findViewById(R.id.checkbox)
         expanderLayout = view.findViewById(R.id.expanderLayout)
+        expanderLayout?.visibility = INVISIBLE
         expander = view.findViewById(R.id.expander)
 
         children = view.findViewById(R.id.childrenLayout)
@@ -129,7 +277,7 @@ class ExpandableCheckbox : ConstraintLayout {
 
         wasResolved = if(Build.VERSION.SDK_INT >= 21)
             theme.resolveAttribute(
-                android.R.attr.colorPrimary, outValue, true)
+                    android.R.attr.colorPrimary, outValue, true)
         else false
 
         val colorPrimary = if (wasResolved) {
@@ -141,24 +289,30 @@ class ExpandableCheckbox : ConstraintLayout {
 
         // If checkbox text set in XML, get it
         if (a.hasValue(R.styleable.ExpandableCheckbox_text) &&
-            a.getString(R.styleable.ExpandableCheckbox_text) != null) {
+                a.getString(R.styleable.ExpandableCheckbox_text) != null) {
             text = a.getString(R.styleable.ExpandableCheckbox_text)!!
         }
 
-        textColor =
-            a.getColor(R.styleable.ExpandableCheckbox_textColor, defaultTextColor)
+        var currentA = a.getColor(R.styleable.ExpandableCheckbox_textColor, defaultTextColor)
+        //If it's not default, and it's not inherited from parent, then it must be unique, so set it
+        if(currentA != defaultTextColor && (parent == null || currentA != parent!!.childTextColor))
+            textColor = currentA
 
-        childTextColor =
-            a.getColor(R.styleable.ExpandableCheckbox_childTextColor, defaultTextColor)
+        currentA = a.getColor(R.styleable.ExpandableCheckbox_childTextColor, defaultTextColor)
+        if(currentA != defaultTextColor && (parent == null || currentA != parent!!.childTextColor))
+            childTextColor = currentA
 
-        expanderColor =
-            a.getColor(R.styleable.ExpandableCheckbox_expanderColor, defaultTextColor)
+        currentA = a.getColor(R.styleable.ExpandableCheckbox_expanderColor, defaultTextColor)
+        if(currentA != defaultTextColor && (parent == null || currentA != parent!!.expanderColor))
+            expanderColor = currentA
 
-        checkboxColor =
-                a.getColor(R.styleable.ExpandableCheckbox_checkboxColor, colorPrimary)
+        currentA = a.getColor(R.styleable.ExpandableCheckbox_checkboxColor, colorPrimary)
+        if(currentA != colorPrimary && (parent == null || currentA != parent!!.childCheckboxColor))
+            checkboxColor = currentA
 
-        childCheckboxColor =
-                a.getColor(R.styleable.ExpandableCheckbox_childCheckboxColor, colorPrimary)
+        currentA = a.getColor(R.styleable.ExpandableCheckbox_childCheckboxColor, colorPrimary)
+        if(currentA != colorPrimary && (parent == null || currentA != parent!!.childCheckboxColor))
+            childCheckboxColor = currentA
 
         checkbox?.isChecked = a.getBoolean(R.styleable.ExpandableCheckbox_checked, false)
 
@@ -166,41 +320,31 @@ class ExpandableCheckbox : ConstraintLayout {
 
         a.recycle()
 
-        checkbox?.text = text
-        checkbox?.setTextColor(textColor)
-
-        // Set color of expander box
-        changeExpanderColor(expanderColor!!)
-
         // Expand/collapse on click
         expanderLayout?.setOnClickListener{
-            expand(!isExpanded())
+            expanded = !isExpanded()
         }
 
         // Run listener when checked changes
         checkbox?.setOnCheckedChangeListener{buttonView, isChecked ->
-            onCheckedChangeListener?.onCheckedChanged(isChecked)
+            onCheckedChangeListener?.onCheckedChanged(checkbox!!, isChecked)
         }
 
         // Check/uncheck all children when clicked
-        checkbox?.setOnClickListener { setAllChecked(isChecked()) }
-
-        // Set checkbox to appropriate drawable
-        setCheckboxView()
+        checkbox?.setOnClickListener {
+            setAllChecked(isChecked())
+        }
 
         //Expand on long click
         checkboxLayout?.setOnLongClickListener{
-            expand(!isExpanded())
+            expanded = !isExpanded()
 
             //return
             false
         }
 
         // Expand/Collapse initially. Mostly for use in XML
-        if(expanded)
-            expand(expanded, false)
-        else
-            expand(expanded, false)
+        expand(expanded, false)
     }
 
     /**
@@ -217,24 +361,6 @@ class ExpandableCheckbox : ConstraintLayout {
             children.visibility = VISIBLE
         else
             children.visibility = GONE
-
-        this.expanded = expand
-
-        if(expand) {
-            if (Build.VERSION.SDK_INT >= 21)
-                expander?.setImageDrawable(context.getDrawable(R.drawable.expander_expanded))
-            else
-                expander?.setImageDrawable(resources.getDrawable(R.drawable.expander_expanded))
-        }
-        else {
-            if (Build.VERSION.SDK_INT >= 21)
-                expander?.setImageDrawable(context.getDrawable(R.drawable.expander_collapsed))
-            else
-                expander?.setImageDrawable(resources.getDrawable(R.drawable.expander_collapsed))
-        }
-
-        if(expanderColor != null)
-            changeExpanderColor(expanderColor!!)
     }
 
     /**
@@ -242,7 +368,7 @@ class ExpandableCheckbox : ConstraintLayout {
      *
      * @param expand : If true expands the view, if false collapses the view
      */
-    fun expand(expand: Boolean) {
+    private fun expand(expand: Boolean) {
         expand(expand, true)
     }
 
@@ -270,7 +396,18 @@ class ExpandableCheckbox : ConstraintLayout {
          * @param checked : This will be true if the checkbox is checked after the change,
          *      or false if the box is not checked after the change
          */
-        fun onCheckedChanged(checked: Boolean)
+        fun onCheckedChanged(box: AppCompatCheckBox, checked: Boolean)
+    }
+
+    /**
+     * Add a child checkbox. These will be hidden while the main view is collapsed and visible
+     *  when the view is expanded
+     *
+     * @param child : Checkbox to be added
+     */
+    fun addChild(child: ExpandableCheckbox)
+    {
+        addChild(child, null)
     }
 
     /**
@@ -280,38 +417,60 @@ class ExpandableCheckbox : ConstraintLayout {
      * @param text : The text next to the new checkbox
      * @param onCheckedChangeListener : What to do when the checkbox check changes
      */
-    fun addChild(text : String, onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?)
+    fun addChild(text: String, onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?)
     {
-        // Set text on new checkbox
-        val newCheckbox = AppCompatCheckBox(context)
-        newCheckbox.text = text
-        newCheckbox.setTextColor(childTextColor)
 
-        //Change Color
-        val states = arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf())
-        val colors = intArrayOf(childCheckboxColor!!, childCheckboxColor!!)
-        CompoundButtonCompat.setButtonTintList(newCheckbox, ColorStateList(states, colors))
+        val child = ExpandableCheckbox(context)
+        child.text = text
 
-        // Check/Uncheck the parent checkbox when necessary
-        newCheckbox.setOnCheckedChangeListener{ button, checked ->
-            setCheckboxView()
-            onCheckedChangeListener?.onCheckedChanged(button, checked)
-        }
+        addChild(child, onCheckedChangeListener)
+    }
 
-        children.addView(newCheckbox)
+    /**
+     * Add a child checkbox. These will be hidden while the main view is collapsed and visible
+     *  when the view is expanded
+     *
+     * @param child : Checkbox to be added
+     * @param onCheckedChangeListener : What to do when the checkbox check changes
+     */
+    fun addChild(child: ExpandableCheckbox, onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?)
+    {
+        child.setOnCheckedChangeListener(onCheckedChangeListener)
+
+        expanderLayout?.visibility = View.VISIBLE
+
+        if(!child.textColorChanged)
+            child.textColor = childTextColor
+        if(!child.childTextColorChanged)
+            child.childTextColor = childTextColor
+        if(!child.checkboxColorChanged)
+            child.checkboxColor = childCheckboxColor
+        if(!child.childCheckboxColorChanged)
+            child.childCheckboxColor = childCheckboxColor
+        if(!child.expanderColorChanged)
+            child.expanderColor = expanderColor
+
+        child.parent = this
+
+        children.addView(child)
+
+        child.changeExpanderColor()
     }
 
     /**
      * Sets actions to perform when a check is changed on a child checkbox
      *
-     * @param index: Which checkbox to add the listener to
      * @param onCheckedChangeListener : Actions to perform when checkbox clicked
      */
-    fun setChildOnCheckedChangeListener(index: Int, onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?)
+    fun setOnCheckedChangeListener(onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?)
     {
-        getChildCheckboxAt(index)?.setOnCheckedChangeListener { button, checked ->
-            setCheckboxView()
-            onCheckedChangeListener?.onCheckedChanged(button, checked)
+        // Check/Uncheck the parent checkbox when necessary
+        this.onCheckedChangeListener = object: OnCheckedChangeListener {
+            override fun onCheckedChanged(box: AppCompatCheckBox, checked: Boolean) {
+                setAllChecked(checked)
+                onCheckedChangeListener?.onCheckedChanged(box, checked)
+                setCheckboxView()
+            }
         }
     }
 
@@ -320,54 +479,30 @@ class ExpandableCheckbox : ConstraintLayout {
      */
     private fun setCheckboxView()
     {
-        setChecked(allChildrenChecked())
-
-        checkbox?.buttonDrawable = if(allChildrenChecked() || noChildrenChecked()) {
-            resources.getDrawable(R.drawable.checkbox_fill)
+        if(shape == SHAPE_STAR)
+        {
+            checkbox?.buttonDrawable = if(allChildrenChecked() || noChildrenChecked()) {
+                resources.getDrawable(R.drawable.star_fill)
+            }
+            else {
+                resources.getDrawable(R.drawable.star_full)
+            }
         }
         else {
-            resources.getDrawable(R.drawable.checkbox_full)
+            checkbox?.buttonDrawable = if (allChildrenChecked()){
+                setChecked(true)
+                resources.getDrawable(R.drawable.checkbox_fill)
+            } else if(noChildrenChecked())
+            {
+                setChecked(false)
+                resources.getDrawable(R.drawable.checkbox_fill)
+            } else {
+                resources.getDrawable(R.drawable.checkbox_full)
+            }
         }
 
-        //Change Color
-        CompoundButtonCompat.setButtonTintList(checkbox!!,
-                ColorStateList(
-                        arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf()),
-                        intArrayOf(checkboxColor!!, checkboxColor!!)))
-    }
-
-    /**
-     * Sets the checked state of a child checkbox at a given index. If no checkbox is found at that
-     *  index, or the index is out of range, no changes are made.
-     *
-     * @param index : The index of the child
-     * @param checked : If true the checkbox will be checked, if false the checkbox will be unchecked
-     */
-    fun setChildChecked(index: Int, checked : Boolean)
-    {
-        try {
-            (children.getChildAt(index) as CheckBox).isChecked = checked
-        }
-        catch (e : Exception)
-        {
-            e.printStackTrace()
-        }
-    }
-
-    /**
-     * Sets the checked state of a child checkbox with the given text. If no checkbox is found
-     *  with that text, no changes are made.
-     *
-     * @param text : The text displayed on the child
-     * @param checked : If true the checkbox will be checked, if false the checkbox will be unchecked
-     */
-    fun setChildChecked(text: String, checked : Boolean)
-    {
-        for(i in 0 until children.childCount)
-            if((children.getChildAt(i) as CheckBox).text == text)
-                (children.getChildAt(i) as CheckBox).isChecked = checked
-
-        setCheckboxView()
+        if(parent != null)
+            parent!!.setCheckboxView()
     }
 
     /**
@@ -380,11 +515,16 @@ class ExpandableCheckbox : ConstraintLayout {
         for(i in 0 until getChildCheckboxCount())
         {
             val view = children.getChildAt(i)
-            if(view is CheckBox && view.isChecked)
+            if((view is CheckBox && view.isChecked))
                 count++
+            else
+                if (view is ExpandableCheckbox && view.allChildrenChecked()) {
+                    //1 for the checkbox itself, plus the number of children
+                    count += view.getChildCheckboxCount() + 1
+                }
         }
 
-        return if(getChildCheckboxCount() > 0 )
+        return if(hasChildren())
             count == getChildCheckboxCount()
         else
             isChecked()
@@ -395,15 +535,22 @@ class ExpandableCheckbox : ConstraintLayout {
      */
     private fun noChildrenChecked() : Boolean
     {
-        var allChecked = true
-        for(i in 0 until children.childCount)
+        var count = 0
+
+        for(i in 0 until getChildCheckboxCount())
         {
-            val view = children.getChildAt(i)
-            if(view is CheckBox && view.isChecked)
-                allChecked = false
+            val view = getChildCheckboxAt(i)
+
+            if (view is ExpandableCheckbox && view.noChildrenChecked()) {
+                //1 for the checkbox itself, plus the number of children
+                count += view.getChildCheckboxCount() + 1
+            }
         }
 
-        return allChecked
+        return if(hasChildren())
+            count == getChildCheckboxCount()
+        else
+            !isChecked()
     }
 
     /**
@@ -413,9 +560,17 @@ class ExpandableCheckbox : ConstraintLayout {
     {
         var count = 0
 
-        for(i in 0 until children.childCount)
-            if(children.getChildAt(i) is CheckBox)
-                count++
+        for(i in 0 until children.childCount) {
+            val subCheckbox = children.getChildAt(i)
+            if (subCheckbox is ExpandableCheckbox) {
+                //1 for the checkbox itself, plus the number of children
+                count += subCheckbox.getChildCheckboxCount() +1
+
+                // To fix bug with some expanders changing and others not
+                if(!subCheckbox.expanderColorChanged)
+                    subCheckbox.changeExpanderColor()
+            }
+        }
 
         return count
     }
@@ -427,15 +582,10 @@ class ExpandableCheckbox : ConstraintLayout {
      *
      * @return : The child checkbox at the desired index specific index
      */
-    private fun getChildCheckboxAt(index: Int): CheckBox? {
-        var count = 0
-        for(i in 0 until children.childCount)
-            if(children.getChildAt(i) is CheckBox)
-            {
-                count++
-                if(count == index)
-                    return children.getChildAt(i) as CheckBox
-            }
+    private fun getChildCheckboxAt(index: Int): Any? {
+        if(children.getChildAt(index) is ExpandableCheckbox) {
+            return children.getChildAt(index)
+        }
 
         return null
     }
@@ -479,27 +629,18 @@ class ExpandableCheckbox : ConstraintLayout {
     }
 
     /**
-     * Set the text of the checkbox
-     *
-     * @param text : The text to appear next to the checkbox
-     */
-    fun setText(text : String)
-    {
-        checkbox?.text = text
-    }
-
-    /**
      * Set the state of the checkbox
      *
      * @param checked : If true checkbox will be checked, if false checkbox will be unchecked
      */
     fun setChecked(checked: Boolean)
     {
-        //Only do this is check really changed
+        //Only do this if check really changed
         if(checkbox?.isChecked != checked)
         {
             checkbox?.isChecked = checked
-            onCheckedChangeListener?.onCheckedChanged(checked)
+            onCheckedChangeListener?.onCheckedChanged(checkbox!!, checked)
+            setCheckboxView()
         }
     }
 
@@ -512,11 +653,13 @@ class ExpandableCheckbox : ConstraintLayout {
     {
         setChecked(checked)
 
-        for (i in 0 until children.childCount)
+        for (i in 0 until getChildCheckboxCount())
         {
-            if(children.getChildAt(i) is CheckBox)
+            val child = children.getChildAt(i)
+
+            if(child is ExpandableCheckbox)
             {
-                (children.getChildAt(i) as CheckBox).isChecked = checked
+                child.setAllChecked(checked)
             }
         }
     }
@@ -528,28 +671,6 @@ class ExpandableCheckbox : ConstraintLayout {
     fun isChecked() : Boolean
     {
         return checkbox!!.isChecked
-    }
-
-    /**
-     * @param index : The index of a child checkbox
-     *
-     * @return : True if the child checkbox at the index is currently checked
-     *           False if it is not currently checked
-     */
-    fun isChecked(index: Int) : Boolean
-    {
-        return getChildCheckboxAt(index)!!.isChecked
-    }
-
-    /**
-     * The actions in this listener will occur when the checkbox changes from checked to unchecked
-     *  or vice versa
-     *
-     *  @param listener : contains actions
-     */
-    fun setCheckedChangeListener(listener: OnCheckedChangeListener)
-    {
-        onCheckedChangeListener = listener
     }
 
     /**
@@ -573,31 +694,46 @@ class ExpandableCheckbox : ConstraintLayout {
     /**
      * Change the color of the expander drawable
      *
-     * @param color : The new color to make the expander
      */
-    private fun changeExpanderColor(color: Int) {
-        expander?.drawable?.colorFilter = changeColor(color)
+    private fun changeExpanderColor() {
+
+        if(Build.VERSION.SDK_INT >= 21)
+            expander?.drawable?.setTint(expanderColor)
+        else {
+            // Use .mutate() to get a new instance of the same drawable.
+            // This fixes an issue with expander colors of child items
+            expander?.drawable?.mutate()!!.colorFilter = changeColor(expanderColor)
+        }
     }
 
     /**
-     * If a child view is a checkbox, add is using addChild instead of the default addView
+     * If a child view is a checkbox, add it using addChild instead of the default addView
      *
      * @param : Checkbox to add
      */
-    private fun myAddView(child: CheckBox)
+    private fun myAddView(child: View)
     {
         // If it's the parent checkbox
         if(child.parent != null && child.parent == checkboxLayout)
         {super.addView(child)}
+        // If it's an expandableCheckbox
+        else if(child is ExpandableCheckbox)
+        {
+            removeView(child)
+            addChild(child)
+        }
         // If it's a child checkbox
-        else {
+        else if(child is CheckBox) {
             removeView(child)
             addChild(child.text.toString(), null)
         }
+        // Catch all
+        else
+            super.addView(child)
     }
 
     override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
-        if(child is CheckBox)
+        if(child is CheckBox || child is ExpandableCheckbox)
         {
             myAddView(child)
         }
@@ -606,7 +742,7 @@ class ExpandableCheckbox : ConstraintLayout {
     }
 
     override fun addView(child: View?, width: Int, height: Int) {
-        if(child is CheckBox)
+        if(child is CheckBox || child is ExpandableCheckbox)
         {
             myAddView(child)
         }
@@ -615,7 +751,7 @@ class ExpandableCheckbox : ConstraintLayout {
     }
 
     override fun addView(child: View?, params: ViewGroup.LayoutParams?) {
-        if(child is CheckBox)
+        if(child is CheckBox || child is ExpandableCheckbox)
         {
             myAddView(child)
         }
@@ -624,7 +760,7 @@ class ExpandableCheckbox : ConstraintLayout {
     }
 
     override fun addView(child: View?, index: Int) {
-        if(child is CheckBox)
+        if(child is CheckBox || child is ExpandableCheckbox)
         {
             myAddView(child)
         }
@@ -634,7 +770,7 @@ class ExpandableCheckbox : ConstraintLayout {
 
     override fun addView(child: View?) {
 
-        if(child is CheckBox)
+        if(child is CheckBox || child is ExpandableCheckbox)
         {
             myAddView(child)
         }
