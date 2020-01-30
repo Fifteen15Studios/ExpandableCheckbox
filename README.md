@@ -14,6 +14,10 @@ Clicking on the expander [+] or [-] will expand or collapse the child view.
 
 Long pressing the text of the parent checkbox will also expand or collapse the child view.
 
+## Known Issues
+1. ChildTextColor does not show properly in XML preview 
+2. ExpanderColor does not show properly on children in XML preview
+
 ### Optional XML parameters
 **expanded**: The initial state of the child view. If true, the children will be shown, if false they will be hidden.
 
@@ -45,7 +49,8 @@ Long pressing the text of the parent checkbox will also expand or collapse the c
 **Defualt**: For API 21+ - android.R.attr.colorPrimary. If android.R.attr.colorPrimary not found, or API is < 21, default is default text color
 
 
-**expanderColor**: The color of the [+] or [-] drawable used to expand/collapse the child view
+**expanderColor**: The color of the [+] or [-] drawable used to expand/collapse the child view  
+NOTE: Changing this color will also change the color of expanders in child objects. You can explicitly change the color of the expander on those children, and the color set on the child object will take priority.
 
 **Default**: Default text color
 
