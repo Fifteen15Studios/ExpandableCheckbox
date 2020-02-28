@@ -1,7 +1,7 @@
 # ExpandableCheckbox
 An expandable checkbox for Android which can contain child checkboxes.
 
-Note that the screenshots below have custom values set for colors. The custom values are the same as in the example code below. Also, these are old screenshots. I will get new ones, with the new spacing, soon.
+Note that the gif below has custom values set for colors.
 
 <img src="https://raw.githubusercontent.com/Fifteen15Studios/ExpandableCheckbox/master/2020_02_28_164500.gif?raw=true" alt="gif" width="250"> 
 
