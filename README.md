@@ -19,6 +19,11 @@ Long pressing the text of the parent checkbox will also expand or collapse the c
 2. ExpanderColor does not show properly on children in XML preview
 
 ### Optional XML parameters
+**checked**: Initial value of the checkbox. If true the box wil be checked, if false it will be empty (unchecked).
+
+**Default**: False
+
+
 **expanded**: The initial state of the child view. If true, the children will be shown, if false they will be hidden.
 
 **Default**: False
