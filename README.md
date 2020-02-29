@@ -114,10 +114,12 @@ Most of the time when using XML, you will also have some Java or Kotlin code wit
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="childCheckbox"/>
+        android:text="childCheckbox"
+        android:id="@+id/childCheckbox"/>
     <ExpandableCheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/Child2"
         app:text="Child2"
         app:checkboxColor="@color/red"/>
 </com.fifteen15studios.expandablecheckbox.ExpandableCheckbox>
