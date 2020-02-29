@@ -168,6 +168,6 @@ child1.setOnCheckedChangeListener(object : CompundButton.OnCheckedChangeListener
 
 **setAllChecked(checked : Boolean)** - Checks or unchecks all checkboxes, parent and children. Parameters: checked: If true checks the parent and all children, if false unchecks the parent and all children.
 
-**setChecked(checked: Boolean)** - Checks of unchecks the parent checkbox and ONLY the parent checkbox. Calling this function will NOT affect the children. Parameter: If true checks the parent, if False unchecks the parent.
+**setChecked(checked: Boolean)** - Checks or unchecks the parent checkbox and ONLY the parent checkbox. Calling this function will NOT affect the children. Parameter: If true checks the parent, if False unchecks the parent.
 
 **setOnCheckedChangeListener(onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?)** - Sets the onCheckedChangeListener for this checkbox. Paramters: onCheckedChangeListener: Actions to perform when the check changes for this checkbox.
