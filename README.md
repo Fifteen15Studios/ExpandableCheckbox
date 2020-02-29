@@ -146,28 +146,28 @@ child1.setOnCheckedChangeListener(object : CompundButton.OnCheckedChangeListener
 ```
 
 ## Pubic functions
-**isExpanded()** - Returns true if the view is currently expanded, false if it is currently collapsed
-
-**hasChildren()** - Returns true if it has child checkboxes, otherwise returns false
-
 **addChild(child: ExpandableCheckbox)** - Adds a new child checkbox. Parameters: child: the checkbox to add
 
 **addChild(child: ExpandableCheckbox, onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?)** - Adds a new child checkbox. Parameters: child: the checkbox to add. onCheckedChangeListener: Actions to perform when the check changes for this child.
 
 **addChild(text : String, onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?)** - Adds a new child checkbox. Parameters: text: The text to display next to the child checkbox. onCheckedChangeListener: Actions to perform when the check changes for this child.
 
-**setOnCheckedChangeListener(onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?)** - Sets the onCheckedChangeListener for this checkbox. Paramters: onCheckedChangeListener: Actions to perform when the check changes for this checkbox.
-
-**getChildCheckboxCount()** - Returns the number of child checkboxes
+**getChildCheckbox(text: String)** - Returns the child checkbox with specific text value. Parameters: text: String to look for in each child
 
 **getChildCheckboxAt(index: Int)** - Returns the child checkbox at a specific index. If the index is invalid, returns null. Parameters: index: Index at which to look for a child.
 
-**getChildCheckbox(text: String)** - Returns the child checkbox with specific text value. Parameters: text: String to look for in each child
+**getChildCheckboxCount()** - Returns the number of child checkboxes
 
-**setChecked(checked: Boolean)** - Checks of unchecks the parent checkbox and ONLY the parent checkbox. Calling this function will NOT affect the children. Parameter: If true checks the parent, if False unchecks the parent.
-
-**setAllChecked(checked : Boolean)** - Checks or unchecks all checkboxes, parent and children. Parameters: checked: If true checks the parent and all children, if false unchecks the parent and all children.
+**hasChildren()** - Returns true if it has child checkboxes, otherwise returns false
 
 **isChecked()** - Returns true if parent is checked, flase if parent is not checked.
 
 **isChecked(index: Int)** - Returns true if child checkbox is checked, false if child checkbox is not checked. Parameters: index: index of child to check.
+
+**isExpanded()** - Returns true if the view is currently expanded, false if it is currently collapsed
+
+**setAllChecked(checked : Boolean)** - Checks or unchecks all checkboxes, parent and children. Parameters: checked: If true checks the parent and all children, if false unchecks the parent and all children.
+
+**setChecked(checked: Boolean)** - Checks of unchecks the parent checkbox and ONLY the parent checkbox. Calling this function will NOT affect the children. Parameter: If true checks the parent, if False unchecks the parent.
+
+**setOnCheckedChangeListener(onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?)** - Sets the onCheckedChangeListener for this checkbox. Paramters: onCheckedChangeListener: Actions to perform when the check changes for this checkbox.
