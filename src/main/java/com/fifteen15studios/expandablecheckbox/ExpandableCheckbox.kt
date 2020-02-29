@@ -596,9 +596,28 @@ class ExpandableCheckbox : ConstraintLayout {
      *
      * @return : The child checkbox at the desired index specific index
      */
-    private fun getChildCheckboxAt(index: Int): Any? {
-        if(children.getChildAt(index) is ExpandableCheckbox) {
-            return children.getChildAt(index)
+    fun getChildCheckboxAt(index: Int): ExpandableCheckbox? {
+        val box = children.getChildAt(index)
+        if(box is ExpandableCheckbox) {
+            return box
+        }
+
+        return null
+    }
+
+    fun getChildCheckbox(text: String): ExpandableCheckbox? {
+        for(i in 0 .. getChildCheckboxCount())
+        {
+            val box = getChildCheckboxAt(i)
+            if(box?.text == text)
+                return box
+
+            //Check its children
+            if(box != null && box.hasChildren()) {
+                val newBox = box.getChildCheckbox(text)
+                if(newBox != null)
+                    return newBox
+            }
         }
 
         return null
