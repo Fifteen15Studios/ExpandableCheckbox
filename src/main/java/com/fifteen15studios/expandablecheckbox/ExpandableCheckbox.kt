@@ -69,16 +69,22 @@ class ExpandableCheckbox : ConstraintLayout {
      */
     var shape = SHAPE_SQUARE
         set(value) {
-            field = value
-
-            try{
-                setCheckboxView()
+            if(field != value) {
+                field = value
+                shapeChanged = true
             }
-            catch (e : Exception)
-            {
 
+            for(i in 0 until getChildCheckboxCount()) {
+                val box = getChildCheckboxAt(i)
+                if (box is ExpandableCheckbox && !box.shapeChanged) {
+                    box.shape = value
+                }
             }
+
+            setCheckboxView()
         }
+
+    private var shapeChanged = false
 
     /**
      * Text to be displayed next to the checkbox
@@ -86,7 +92,6 @@ class ExpandableCheckbox : ConstraintLayout {
     var text = ""
         set(value) {
             field = value
-
             checkbox?.text = value
         }
 
@@ -98,6 +103,11 @@ class ExpandableCheckbox : ConstraintLayout {
             if(field!=value) {
                 field = value
                 textColorChanged = true
+            }
+
+            if(!childTextColorChanged) {
+                childTextColor = value
+                childCheckboxColorChanged = false
             }
 
             checkbox?.setTextColor(value)
@@ -127,8 +137,6 @@ class ExpandableCheckbox : ConstraintLayout {
                         box.childTextColor = value
                 }
             }
-
-            setCheckboxView()
         }
 
     var childTextColorChanged = false
@@ -141,6 +149,8 @@ class ExpandableCheckbox : ConstraintLayout {
             if(field!=value) {
                 field = value
                 checkboxColorChanged = true
+                if(!childCheckboxColorChanged)
+                    childCheckboxColor = value
             }
 
             try {
@@ -154,7 +164,6 @@ class ExpandableCheckbox : ConstraintLayout {
             }
             catch (e: Exception)
             {
-                checkboxColorChanged = false
                 e.printStackTrace()
             }
         }
@@ -182,8 +191,6 @@ class ExpandableCheckbox : ConstraintLayout {
                         box.childCheckboxColor = value
                 }
             }
-
-            setCheckboxView()
         }
 
     private var childCheckboxColorChanged = false
@@ -191,7 +198,7 @@ class ExpandableCheckbox : ConstraintLayout {
     /**
      * Color of the [+] or [-] icon next to the checkbox
      */
-    // TODO: Doesn't trickle down all the way, doesn't show completely correctly in XML
+    // TODO: doesn't show completely correctly in XML
     var expanderColor = Color.BLACK
         set(value) {
             if(field!=value) {
@@ -294,25 +301,29 @@ class ExpandableCheckbox : ConstraintLayout {
         }
 
         var currentA = a.getColor(R.styleable.ExpandableCheckbox_textColor, defaultTextColor)
-        //If it's not default, and it's not inherited from parent, then it must be unique, so set it
-        if(currentA != defaultTextColor && (parent == null || currentA != parent!!.childTextColor))
-            textColor = currentA
+        textColor = currentA
+        if(currentA == defaultTextColor)
+            textColorChanged = false
 
         currentA = a.getColor(R.styleable.ExpandableCheckbox_childTextColor, defaultTextColor)
-        if(currentA != defaultTextColor && (parent == null || currentA != parent!!.childTextColor))
-            childTextColor = currentA
+        childTextColor = currentA
+        if(currentA == defaultTextColor)
+            childTextColorChanged = false
 
         currentA = a.getColor(R.styleable.ExpandableCheckbox_expanderColor, defaultTextColor)
-        if(currentA != defaultTextColor && (parent == null || currentA != parent!!.expanderColor))
-            expanderColor = currentA
+        expanderColor = currentA
+        if(currentA == defaultTextColor)
+            expanderColorChanged = false
 
         currentA = a.getColor(R.styleable.ExpandableCheckbox_checkboxColor, colorPrimary)
-        if(currentA != colorPrimary && (parent == null || currentA != parent!!.childCheckboxColor))
-            checkboxColor = currentA
+        checkboxColor = currentA
+        if(currentA == colorPrimary)
+            checkboxColorChanged = false
 
         currentA = a.getColor(R.styleable.ExpandableCheckbox_childCheckboxColor, colorPrimary)
-        if(currentA != colorPrimary && (parent == null || currentA != parent!!.childCheckboxColor))
-            childCheckboxColor = currentA
+        childCheckboxColor = currentA
+        if(currentA == colorPrimary)
+            childCheckboxColorChanged = false
 
         checkbox?.isChecked = a.getBoolean(R.styleable.ExpandableCheckbox_checked, false)
 
@@ -479,6 +490,14 @@ class ExpandableCheckbox : ConstraintLayout {
      */
     private fun setCheckboxView()
     {
+        if(allChildrenChecked()) {
+            if (!isChecked())
+                setChecked(true)
+        } else if(noChildrenChecked()) {
+            if (isChecked())
+                setChecked(false)
+        }
+
         if(shape == SHAPE_STAR)
         {
             checkbox?.buttonDrawable = if(allChildrenChecked() || noChildrenChecked()) {
@@ -489,12 +508,7 @@ class ExpandableCheckbox : ConstraintLayout {
             }
         }
         else {
-            checkbox?.buttonDrawable = if (allChildrenChecked()){
-                setChecked(true)
-                resources.getDrawable(R.drawable.checkbox_fill)
-            } else if(noChildrenChecked())
-            {
-                setChecked(false)
+            checkbox?.buttonDrawable = if (allChildrenChecked() || noChildrenChecked()){
                 resources.getDrawable(R.drawable.checkbox_fill)
             } else {
                 resources.getDrawable(R.drawable.checkbox_full)
