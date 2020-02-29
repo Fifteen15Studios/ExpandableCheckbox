@@ -22,11 +22,11 @@
         <item name="text">""</item>
         <item name="checked">false</item>
         <item name="expanded">false</item>
-        <item name="textColor">?attr/textColorAlertDialogListItem</item>
-        <item name="childTextColor">?attr/textColorAlertDialogListItem</item>
-        <item name="expanderColor">?attr/textColorAlertDialogListItem</item>
-        <item name="checkboxColor">?attr/colorPrimary</item>
-        <item name="childCheckboxColor">?attr/colorPrimary</item>
+        <item name="textColor">?android:attr/textColorPrimary</item>
+        <item name="childTextColor">?android:attr/textColorPrimary</item>
+        <item name="expanderColor">?android:attr/textColorPrimary</item>
+        <item name="checkboxColor">?android:attr/colorPrimary</item>
+        <item name="childCheckboxColor">?android:attr/colorPrimary</item>
     </style>
 
     <style name="ExpandableCheckboxTheme" parent="@android:style/Theme">
