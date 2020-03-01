@@ -49,12 +49,12 @@ Long pressing the text of the parent checkbox will also expand or collapse the c
 **Defualt**: For API 21+ - android.R.attr.colorPrimary. If android.R.attr.colorPrimary not found, or API is < 21, default is default text color
 
 
-**childCheckboxColor**: The color of the box containing the child checkboxed
+**childCheckboxColor**: The color of the box containing the child checkboxes
 
 **Defualt**: For API 21+ - android.R.attr.colorPrimary. If android.R.attr.colorPrimary not found, or API is < 21, default is default text color
 
 
-**expanderColor**: The color of the [+] or [-] drawable used to expand/collapse the child view  
+**expanderColor**: The color of the [+] or [-] drawable used to expand/collapse the child view
 NOTE: Changing this color will also change the color of expanders in child objects. You can explicitly change the color of the expander on those children, and the color set on the child object will take priority.
 
 **Default**: Default text color
@@ -135,7 +135,7 @@ Most of the time when using XML, you will also have some Java or Kotlin code wit
 val expandableCheckbox = findViewById<ExpandableCheckbox>(R.id.parentCheckbox)
 val child1 = findViewById<Checkbox>(R.id.childCheckbox)
 
-child1.setOnCheckedChangeListener(object : CompundButton.OnCheckedChangeListener {
+child1.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
   override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
       if (isChecked)
           // Do something when checked
@@ -160,7 +160,7 @@ child1.setOnCheckedChangeListener(object : CompundButton.OnCheckedChangeListener
 
 **hasChildren()** - Returns true if it has child checkboxes, otherwise returns false
 
-**isChecked()** - Returns true if parent is checked, flase if parent is not checked.
+**isChecked()** - Returns true if parent is checked, false if parent is not checked.
 
 **isChecked(index: Int)** - Returns true if child checkbox is checked, false if child checkbox is not checked. Parameters: index: index of child to check.
 
@@ -170,4 +170,4 @@ child1.setOnCheckedChangeListener(object : CompundButton.OnCheckedChangeListener
 
 **setChecked(checked: Boolean)** - Checks or unchecks the parent checkbox and ONLY the parent checkbox. Calling this function will NOT affect the children. Parameter: If true checks the parent, if False unchecks the parent.
 
-**setOnCheckedChangeListener(onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?)** - Sets the onCheckedChangeListener for this checkbox. Paramters: onCheckedChangeListener: Actions to perform when the check changes for this checkbox.
+**setOnCheckedChangeListener(onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?)** - Sets the onCheckedChangeListener for this checkbox. Parameters: onCheckedChangeListener: Actions to perform when the check changes for this checkbox.
