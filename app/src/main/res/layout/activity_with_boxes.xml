@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/checkboxes"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.fifteen15studios.expandablecheckbox.ExpandableCheckbox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:checkboxColor="@android:color/holo_red_dark"
+        app:childCheckboxColor="@android:color/holo_purple"
+        app:childTextColor="@android:color/holo_blue_bright"
+        app:expanded="true"
+        app:expanderColor="@android:color/holo_red_dark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:text="Top"
+        app:textColor="@android:color/holo_red_dark">
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sub1" />
+
+        <com.fifteen15studios.expandablecheckbox.ExpandableCheckbox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:expanded="true"
+            app:text="Expandable Sub">
+
+            <com.fifteen15studios.expandablecheckbox.ExpandableCheckbox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:childTextColor="@color/colorPrimary"
+                app:expanded="true"
+                app:text="Another Expandable Sub">
+
+                <com.fifteen15studios.expandablecheckbox.ExpandableCheckbox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:text="Another Sub" />
+
+                <com.fifteen15studios.expandablecheckbox.ExpandableCheckbox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:checkboxColor="@android:color/holo_green_dark"
+                    app:text="Another Sub sub"
+                    app:textColor="@android:color/darker_gray" />
+            </com.fifteen15studios.expandablecheckbox.ExpandableCheckbox>
+
+            <com.fifteen15studios.expandablecheckbox.ExpandableCheckbox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:text="Sub of sub" />
+
+            <com.fifteen15studios.expandablecheckbox.ExpandableCheckbox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:text="sub2 of sub" />
+        </com.fifteen15studios.expandablecheckbox.ExpandableCheckbox>
+    </com.fifteen15studios.expandablecheckbox.ExpandableCheckbox>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
