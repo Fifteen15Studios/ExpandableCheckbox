@@ -5,6 +5,10 @@ Note that the gif below has custom values set for colors.
 
 <img src="https://raw.githubusercontent.com/Fifteen15Studios/ExpandableCheckbox/master/2020_02_28_164500.gif?raw=true" alt="gif" width="250"> 
 
+## Known Issues
+1. ChildTextColor does not show properly in XML preview
+2. ExpanderColor does not show properly on children in XML preview
+
 ## How it works
 Checkboxes can be used from Java/Kotlin code, from XML code, or a combination of both.
 
@@ -13,10 +17,6 @@ Clicking on the parent checkbox will check or uncheck all of the children beneat
 Clicking on the expander [+] or [-] will expand or collapse the child view.
 
 Long pressing the text of the parent checkbox will also expand or collapse the child view.
-
-## Known Issues
-1. ChildTextColor does not show properly in XML preview 
-2. ExpanderColor does not show properly on children in XML preview
 
 ### Optional XML parameters
 **checked**: Initial value of the checkbox. If true the box wil be checked, if false it will be empty (unchecked).
