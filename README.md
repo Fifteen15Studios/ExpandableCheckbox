@@ -46,12 +46,12 @@ Long pressing the text of the parent checkbox will also expand or collapse the c
 
 **checkboxColor**: The color of the box containing the parent checkbox
 
-**Defualt**: For API 21+ - android.R.attr.colorPrimary. If android.R.attr.colorPrimary not found, or API is < 21, default is default text color
+**Default**: For API 21+ - android.R.attr.colorPrimary. If android.R.attr.colorPrimary not found, or API is < 21, default is default text color
 
 
 **childCheckboxColor**: The color of the box containing the child checkboxes
 
-**Defualt**: For API 21+ - android.R.attr.colorPrimary. If android.R.attr.colorPrimary not found, or API is < 21, default is default text color
+**Default**: For API 21+ - android.R.attr.colorPrimary. If android.R.attr.colorPrimary not found, or API is < 21, default is default text color
 
 
 **expanderColor**: The color of the [+] or [-] drawable used to expand/collapse the child view
