@@ -15,6 +15,12 @@ Note that the gif below has custom values set for colors.
 3. Add the following line to your **settings.gradle** file: `include ':app', ':expandablecheckbox'` where "app" is the name of your app module
     1. If you already have other modules, just add `, ':expandablecheckbox'` to the existing list
     2. If you don't currently have a **settings.gradle** file, add it to the base directory of your project (where your project-wide build.gradle is)
+4. In your app's build.gradle, add the following:
+    ```
+    dependencies {
+        implementation project(path: ':expandablecheckbox')
+    }
+    ```
     
 The source code files that you downloaded in step 1 above include a fully working test app, so look at how those files are structured if you aren't sure how to do it.
 
