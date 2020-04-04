@@ -9,6 +9,17 @@ Note that the gif below has custom values set for colors.
 1. ChildTextColor does not show properly in XML preview
 2. ExpanderColor does not show properly on children in XML preview
 
+## Add it to your project
+1. Use the "Clone or Download" button above to download a zip of the source files
+2. Extract the "expandablecheckbox" folder into your project folder
+3. Add the following line to your **settings.gradle** file: `include ':app', ':expandablecheckbox'` where "app" is the name of your app module
+    1. If you already have other modules, just add `, ':expandablecheckbox'` to the existing list
+    2. If you don't currently have a **settings.gradle** file, add it to the base directory of your project (where your project-wide build.gradle is)
+    
+The source code files that you downloaded in step 1 above include a fully working test app, so look at how those files are structured if you aren't sure how to do it.
+
+I have been trying to create a working package file (so that you can just use an `implementation` command in your build.gradle) but I don't know if that's possible since this project includes not only kotlin code, but also drawables, layouts, and other XML files that are required. DO NOT use the existing package files as they will not work. I'm trying to get GitHub to delete them.
+
 ## How it works
 Checkboxes can be used from Java/Kotlin code, from XML code, or a combination of both.
 
