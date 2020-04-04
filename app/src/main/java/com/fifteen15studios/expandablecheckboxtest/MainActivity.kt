@@ -3,8 +3,9 @@ package com.fifteen15studios.expandablecheckboxtest
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.CompoundButton
 import android.widget.ScrollView
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.Toast
 import com.fifteen15studios.expandablecheckbox.ExpandableCheckbox
 
 class MainActivity : AppCompatActivity() {
@@ -36,6 +37,25 @@ class MainActivity : AppCompatActivity() {
         subCheck.addChild("Sub2 of sub", null)
         check1.addChild(subCheck)
 
+        setListener(check1)
+
         view.addView(check1)*/
+    }
+
+    fun setListener(checkbox: ExpandableCheckbox?)
+    {
+        val listener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked)
+                Toast.makeText(this, "${buttonView.text} checked.", Toast.LENGTH_SHORT).show()
+        }
+
+        // Set checkChangedListener for top level checkbox
+        checkbox?.setOnCheckedChangeListener(listener)
+
+        // Set checkChangedListener for children
+        if(checkbox != null)
+            for( index in 0 .. checkbox.getChildCheckboxCount()) {
+                setListener(checkbox.getChildCheckboxAt(index))
+            }
     }
 }
