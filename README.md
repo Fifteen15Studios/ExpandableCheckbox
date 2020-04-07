@@ -24,8 +24,6 @@ Note that the gif below has custom values set for colors.
     
 The source code files that you downloaded in step 1 above include a fully working test app, so look at how those files are structured if you aren't sure how to do it.
 
-I have been trying to create a working package file (so that you can just use an `implementation` command in your build.gradle) but I don't know if that's possible since this project includes not only kotlin code, but also drawables, layouts, and other XML files that are required. DO NOT use the existing package files as they will not work. I'm trying to get GitHub to delete them.
-
 ## How it works
 Checkboxes can be used from Java/Kotlin code, from XML code, or a combination of both.
 
